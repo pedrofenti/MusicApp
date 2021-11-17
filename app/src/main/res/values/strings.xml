@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MusicApp</string>
+    <string name="instruments">Instruments</string>
+    <string name="sound_table">Sound Table</string>
+    <string name="karaoke">Karaoke</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_main_menu">TITLE</string>
+    <string name="description_main_menu">DESCRIPTION</string>
+    <string name="image_main_menu">UWU</string>
+    <string name="instruments_desc">Play your favourite instrument</string>
+    <string name="soundtable_desc">Be the producer</string>
+    <string name="karaoke_desc">Sing your favourite songs</string>
+</resources>
