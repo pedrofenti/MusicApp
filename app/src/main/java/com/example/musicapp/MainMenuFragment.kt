@@ -37,15 +37,16 @@ class MainMenuFragment(private val menu_title: String,
 
         view.setOnClickListener {
             //Entrar en la actividad dependiendo de la posicion del fragment
-            //when(position) {
-            //    0 -> startActivity(Intent(this, ))
-            //    1 -> startActivity(Intent(this, ))
-            //    2 -> startActivity(Intent(this, ))
-            //}
+            when(position) {
+                0 -> startActivity(Intent(context, SoundTableActivity::class.java))
+                1 -> startActivity(Intent(context, SoundTableActivity::class.java))
+                2 -> startActivity(Intent(context, SoundTableActivity::class.java))
+            }
         }
 
         view.findViewById<TextView>(R.id.menu_title_text).text = menu_title
         view.findViewById<ImageView>(R.id.menu_image).setImageResource(menu_image)
         view.findViewById<TextView>(R.id.menu_description_text).text = menu_description
     }
+
 }

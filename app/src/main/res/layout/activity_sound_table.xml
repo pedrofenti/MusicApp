@@ -6,4 +6,131 @@
     android:layout_height="match_parent"
     tools:context=".SoundTableActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/soundtable" />
+
+    <TableLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:id="@+id/firstRowButtons"
+            android:layout_width="250dp"
+            android:layout_height="100dp">
+
+            <Button
+                android:id="@+id/stButton1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/secondRowButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/stButton5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton6"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton7"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton8"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/thirdRowButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/stButton9"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton10"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton11"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton12"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="-0.8"
+                app:backgroundTint="#000000" />
+        </TableRow>
+
+    </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
