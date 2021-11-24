@@ -6,27 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".SoundTableActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/titlesound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_sound"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/soundtable" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/actionsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
+        app:layout_constraintStart_toEndOf="@+id/buttonsLayout">
+
+        <TableRow
+            android:id="@+id/aRowButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/stButtonPlay"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
+                app:backgroundTint="#0022AC"
+                app:icon="@drawable/ic_baseline_play_arrow_24"
+                app:iconTint="@color/white" />
+
+            <Button
+                android:id="@+id/stButtonPause"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
+                app:backgroundTint="#0022AC"
+                app:icon="@drawable/ic_baseline_pause_24"
+                app:iconTint="@color/white" />
+
+            <Button
+                android:id="@+id/stButtonStop"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
+                app:backgroundTint="#0022AC"
+                app:iconTint="@color/white" />
+        </TableRow>
+
+    </TableLayout>
 
     <TableLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8">
 
         <TableRow
             android:id="@+id/firstRowButtons"
@@ -37,28 +76,28 @@
                 android:id="@+id/stButton1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
         </TableRow>
@@ -72,28 +111,28 @@
                 android:id="@+id/stButton5"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton6"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton7"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton8"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
         </TableRow>
 
@@ -106,31 +145,77 @@
                 android:id="@+id/stButton9"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton10"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton11"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
 
             <Button
                 android:id="@+id/stButton12"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleX="-0.8"
+                android:scaleX="0.8"
+                app:backgroundTint="#000000" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/fourthRowButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/stButton13"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton14"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton15"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
+                app:backgroundTint="#000000" />
+
+            <Button
+                android:id="@+id/stButton16"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleX="0.8"
                 app:backgroundTint="#000000" />
         </TableRow>
 
     </TableLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlesound" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

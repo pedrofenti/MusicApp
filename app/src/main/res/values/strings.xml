@@ -10,4 +10,5 @@
     <string name="instruments_desc">Play your favourite instrument</string>
     <string name="soundtable_desc">Be the producer</string>
     <string name="karaoke_desc">Sing your favourite songs</string>
+    <string name="title_sound">title</string>
 </resources>
