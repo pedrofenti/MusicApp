@@ -10,7 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
+import com.example.musicapp.databinding.FragmentMainMenuBinding
 import java.lang.IllegalArgumentException
+import java.util.zip.Inflater
 
 
 /**
@@ -24,12 +26,18 @@ class MainMenuFragment(private val menu_title: String,
                        , private val position: Int
                        ) : Fragment() {
 
+    // TODO delete in future
+    constructor(): this("",0,"",0)
+
+    private lateinit var binding: FragmentMainMenuBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_menu, container, false)
+    ): View {
+        binding = FragmentMainMenuBinding.inflate(inflater)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,9 +52,9 @@ class MainMenuFragment(private val menu_title: String,
             }
         }
 
-        view.findViewById<TextView>(R.id.menu_title_text).text = menu_title
-        view.findViewById<ImageView>(R.id.menu_image).setImageResource(menu_image)
-        view.findViewById<TextView>(R.id.menu_description_text).text = menu_description
+        binding.menuTitleText.text = menu_title
+        binding.menuImage.setImageResource(menu_image)
+        binding.menuDescriptionText.text = menu_description
     }
 
 }
