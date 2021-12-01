@@ -1,4 +1,4 @@
-package com.example.musicapp
+package com.example.musicapp.main
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo

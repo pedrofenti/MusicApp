@@ -1,6 +1,5 @@
-package com.example.musicapp
+package com.example.musicapp.soundtable
 
 object SoundTable: ArrayList<MusicButton>() {
-
 
 }

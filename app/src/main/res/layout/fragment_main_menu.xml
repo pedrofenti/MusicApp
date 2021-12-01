@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:contentDescription="@string/image_main_menu"
-    tools:context=".MainMenuFragment">
+    tools:context=".main.MainMenuFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -1,4 +1,4 @@
-package com.example.musicapp
+package com.example.musicapp.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,13 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.annotation.IdRes
+import com.example.musicapp.soundtable.SoundTableActivity
 import com.example.musicapp.databinding.FragmentMainMenuBinding
-import java.lang.IllegalArgumentException
-import java.util.zip.Inflater
 
 
 /**

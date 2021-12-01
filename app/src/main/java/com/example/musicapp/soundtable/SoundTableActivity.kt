@@ -1,14 +1,9 @@
-package com.example.musicapp
+package com.example.musicapp.soundtable
 
-import android.content.ContentValues.TAG
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapp.databinding.ActivitySoundTableBinding
@@ -65,7 +60,7 @@ class SoundTableActivity : AppCompatActivity() {
     private fun setButtonFunctionality(id: Int): View.OnClickListener {
         return View.OnClickListener {
 
-            //TODO añadir un comprobante de que el boton tiene contenido para que no realice openDocumentLauncher
+            //TODO añadir un comprobante de que el boton tiene contenido para que no realice openDocumentLauncher en else
 
             if (SoundTable[id].ref != Uri.EMPTY)
             {
