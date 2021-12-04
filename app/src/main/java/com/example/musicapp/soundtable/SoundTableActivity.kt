@@ -44,8 +44,7 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton16.setOnClickListener(setButtonFunctionality(16))
     }
 
-    private val openDocumentLauncher =
-        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    private val openDocumentLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
 
             if (uri == null) return@registerForActivityResult
 
@@ -62,25 +61,19 @@ class SoundTableActivity : AppCompatActivity() {
 
             //TODO añadir un comprobante de que el boton tiene contenido para que no realice openDocumentLauncher en else
 
-            if (SoundTable[id].ref != Uri.EMPTY)
-            {
-                SoundTable.add(id, MusicButton())
-                openDocumentLauncher.launch(arrayOf("*/*"))
-            }
-            else
-            {
-
-            }
-
-
-
-
+            //if (SoundTable[id].ref != Uri.EMPTY)
+            //{
+            //    SoundTable.add(id, MusicButton())
+            openDocumentLauncher.launch(arrayOf("*/*"))
+//
+            //}
+            //else
+            //{
+//
+            //}
 //            SoundTable.add(MusicButton("Jazz"))
 //            SoundTable[id].title = "hola"
-
 //            val f = File.createTempFile()
-
-
             // open file
             //
         }
