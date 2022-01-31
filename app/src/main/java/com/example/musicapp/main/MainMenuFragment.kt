@@ -36,10 +36,17 @@ class MainMenuFragment(private val menu_title: String,
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.mainMenuProgress.visibility = View.INVISIBLE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         view.setOnClickListener {
+            binding.mainMenuProgress.visibility = View.VISIBLE
+
             //Entrar en la actividad dependiendo de la posicion del fragment
             when(position) {
                 0 -> startActivity(Intent(context, SoundTableActivity::class.java))

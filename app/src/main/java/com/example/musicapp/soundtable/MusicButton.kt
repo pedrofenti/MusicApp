@@ -7,10 +7,8 @@ import java.time.Duration
 
 class MusicButton(
     val ref: Uri = Uri.EMPTY,
-    val title: String = "title",
+    val title: String = "title.empty",
     val dur: Duration? = Duration.ZERO)
 {
-
-
 
 }

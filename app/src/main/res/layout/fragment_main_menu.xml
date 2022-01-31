@@ -8,7 +8,7 @@
     android:contentDescription="@string/image_main_menu"
     tools:context=".main.MainMenuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
 
     <TextView
         android:id="@+id/menu_title_text"
@@ -42,5 +42,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Circular progress indicator -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/mainMenuProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        tools:visibility="visible" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
