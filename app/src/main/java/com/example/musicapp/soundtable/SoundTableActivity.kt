@@ -2,14 +2,17 @@ package com.example.musicapp.soundtable
 
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.documentfile.provider.DocumentFile
 import com.example.musicapp.databinding.ActivitySoundTableBinding
 import java.io.File
+
 
 class SoundTableActivity : AppCompatActivity() {
 
@@ -85,18 +88,51 @@ class SoundTableActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Function to convert milliseconds time to
+     * Timer Format
+     * Hours:Minutes:Seconds
+    fun formateSeconds(milliseconds: Long): String? {
+        var finalTimerString = ""
+        var secondsString = ""
+
+        // Convert total duration into time
+        val hours = (milliseconds / (1000 * 60 * 60)).toInt()
+        val minutes = (milliseconds % (1000 * 60 * 60)).toInt() / (1000 * 60)
+        val seconds = (milliseconds % (1000 * 60 * 60) % (1000 * 60) / 1000).toInt()
+
+        // Add hours if there
+        if (hours > 0) {
+            finalTimerString = "$hours:"
+        }
+
+        // Prepending 0 to seconds if it is one digit
+        secondsString = if (seconds < 10) {
+            "0$seconds"
+        } else {
+            "" + seconds
+        }
+        finalTimerString = "$finalTimerString$minutes:$secondsString"
+
+        //      return  String.format("%02d Min, %02d Sec",
+        //                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
+        //                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
+        //                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
+
+        // return timer string
+        return finalTimerString
+    }*/
+
     private val openDocumentLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             //TODO esto falla no se porqe
             if (uri == null) return@registerForActivityResult
-
             val input = contentResolver.openInputStream(uri)
-
-            val file = File(uri.path ?: " ")
-
-            SoundTable.add(globalId, MusicButton(uri, file.name))
-
-            binding.titlesound.text = file.nameWithoutExtension
+            val file = DocumentFile.fromSingleUri(applicationContext, uri)
+            //val file = File(uri.path ?: " ")
+            SoundTable.add(globalId, MusicButton(uri, file?.name, file?.length()))
+            binding.titlesound.text = file?.name
+            binding.duration.text = file?.length().toString()
         }
 
     private fun idToButton(id: Int): Button? {
@@ -128,6 +164,7 @@ class SoundTableActivity : AppCompatActivity() {
 
             //Cambiar el titulo y la duracion del audio que se muestra
             binding.titlesound.text = SoundTable[id].title
+            binding.duration.text = SoundTable[id].dur.toString()
 
             //TODO poner que se pueda poner la duracion de la pista elegida
             //binding.duration. = SoundTable[id].dur
