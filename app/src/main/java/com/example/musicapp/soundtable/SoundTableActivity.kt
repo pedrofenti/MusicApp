@@ -3,20 +3,25 @@ package com.example.musicapp.soundtable
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
 import android.media.MediaMetadataRetriever
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import com.example.musicapp.databinding.ActivitySoundTableBinding
 import java.io.File
+import kotlin.reflect.safeCast
 
 
 class SoundTableActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySoundTableBinding
+
+    private lateinit var mediaPlayer: MediaPlayer
 
     private var globalId : Int = 0;
 
@@ -72,6 +77,12 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton14.setOnLongClickListener(setLongClickButtonFunctionality(14))
         binding.stButton15.setOnLongClickListener(setLongClickButtonFunctionality(15))
         binding.stButton16.setOnLongClickListener(setLongClickButtonFunctionality(16))
+
+        binding.stButtonPlay.setOnClickListener{
+            if(mediaPlayer.isPlaying) mediaPlayer.stop()
+            mediaPlayer = MediaPlayer.create(this, SoundTable[globalId].ref)
+            mediaPlayer.start()
+        }
     }
 
     override fun onResume() {
@@ -129,10 +140,14 @@ class SoundTableActivity : AppCompatActivity() {
             if (uri == null) return@registerForActivityResult
             val input = contentResolver.openInputStream(uri)
             val file = DocumentFile.fromSingleUri(applicationContext, uri)
-            //val file = File(uri.path ?: " ")
-            SoundTable.add(globalId, MusicButton(uri, file?.name, file?.length()))
-            binding.titlesound.text = file?.name
-            binding.duration.text = file?.length().toString()
+
+
+            SoundTable[globalId] = MusicButton(uri, file?.name, file?.length())
+
+            val title = TextView::class.safeCast(checkTitles())
+            title?.text = file?.name
+
+            //binding.duration.text = file?.length().toString()
         }
 
     private fun idToButton(id: Int): Button? {
@@ -159,31 +174,41 @@ class SoundTableActivity : AppCompatActivity() {
 
     private fun setButtonFunctionality(id: Int): View.OnClickListener {
         return View.OnClickListener {
+            globalId = id
+
             //Coger el boton que el usuario a elegido
             val button : Button? = idToButton(id)
 
             //Cambiar el titulo y la duracion del audio que se muestra
-            binding.titlesound.text = SoundTable[id].title
-            binding.duration.text = SoundTable[id].dur.toString()
+            //binding.titlesound.text = SoundTable[id].title
+            //binding.duration.text = SoundTable[id].dur.toString()
 
-            //TODO poner que se pueda poner la duracion de la pista elegida
-            //binding.duration. = SoundTable[id].dur
+            val title = TextView::class.safeCast(checkTitles())
+            title?.text = SoundTable[id].title
         }
     }
 
     private fun setLongClickButtonFunctionality(id: Int): View.OnLongClickListener {
         return View.OnLongClickListener {
-
-            if (SoundTable[id].ref == Uri.EMPTY)
-            {
+            if (SoundTable[id].ref == Uri.EMPTY) {
                 globalId = id
                 openDocumentLauncher.launch(arrayOf("audio/*"))
 
                 val button : Button? = idToButton(id)
                 button?.setBackgroundColor(Color.WHITE)
             }
-
             return@OnLongClickListener true
         }
+    }
+
+
+    private fun checkTitles() :TextView {
+        if(binding.titlesound.text == "title.empty" || binding.titlesound.text == "title"){
+            return binding.titlesound
+        }
+        else if(binding.titlesound2.text == "title.empty"|| binding.titlesound2.text == "title"){
+            return binding.titlesound2
+        }
+        return binding.titlesound
     }
 }
