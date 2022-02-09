@@ -8,10 +8,11 @@
 
     <TextView
         android:id="@+id/titlesound2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/title_sound"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/durationBar2"
         app:layout_constraintEnd_toStartOf="@+id/duration2"
         app:layout_constraintStart_toEndOf="@+id/actualDuration2" />
@@ -33,7 +34,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/actionsLayout"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -50,13 +51,13 @@
 
     <TextView
         android:id="@+id/titlesound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/title_sound"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/durationBar"
         app:layout_constraintEnd_toEndOf="@+id/durationBar"
-        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="@+id/durationBar" />
 
     <TextView
@@ -76,7 +77,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/actionsLayout"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -95,7 +96,7 @@
         android:id="@+id/actionsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

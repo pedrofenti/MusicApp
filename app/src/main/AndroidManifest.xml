@@ -9,13 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
-        <activity android:name=".DragNDrop.DragNDrop"></activity>
+        <activity android:name=".DragNDrop.DragNDrop">
+        </activity>
         <activity android:name=".soundtable.SoundTableActivity" />
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.MusicApp.NoActionBar"
-            android:exported="true" >
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

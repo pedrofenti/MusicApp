@@ -2,7 +2,6 @@ package com.example.musicapp.soundtable
 
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
-import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -12,8 +11,8 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
+import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivitySoundTableBinding
-import java.io.File
 import kotlin.reflect.safeCast
 
 
@@ -23,7 +22,7 @@ class SoundTableActivity : AppCompatActivity() {
 
     private lateinit var mediaPlayer: MediaPlayer
 
-    private var globalId : Int = 0;
+    private var globalId: Int = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,6 @@ class SoundTableActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        //Inicializar todos los botones a nada
         SoundTable.initSoundTableArray()
 
         binding.stButton1.setOnClickListener(setButtonFunctionality(1))
@@ -78,8 +76,8 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton15.setOnLongClickListener(setLongClickButtonFunctionality(15))
         binding.stButton16.setOnLongClickListener(setLongClickButtonFunctionality(16))
 
-        binding.stButtonPlay.setOnClickListener{
-            if(mediaPlayer.isPlaying) mediaPlayer.stop()
+        binding.stButtonPlay.setOnClickListener {
+            if (mediaPlayer.isPlaying) mediaPlayer.stop()
             mediaPlayer = MediaPlayer.create(this, SoundTable[globalId].ref)
             mediaPlayer.start()
         }
@@ -88,12 +86,11 @@ class SoundTableActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         for (i in 0..16) {
-            val button : Button? = idToButton(i)
+            val button: Button? = idToButton(i)
             val isAny = SoundTable.checkUriRef(i)
-            if (!isAny){
+            if (!isAny) {
                 button?.setBackgroundColor(Color.BLACK)
-            }
-            else{
+            } else {
                 button?.setBackgroundColor(Color.WHITE)
             }
         }
@@ -104,34 +101,34 @@ class SoundTableActivity : AppCompatActivity() {
      * Timer Format
      * Hours:Minutes:Seconds
     fun formateSeconds(milliseconds: Long): String? {
-        var finalTimerString = ""
-        var secondsString = ""
+    var finalTimerString = ""
+    var secondsString = ""
 
-        // Convert total duration into time
-        val hours = (milliseconds / (1000 * 60 * 60)).toInt()
-        val minutes = (milliseconds % (1000 * 60 * 60)).toInt() / (1000 * 60)
-        val seconds = (milliseconds % (1000 * 60 * 60) % (1000 * 60) / 1000).toInt()
+    // Convert total duration into time
+    val hours = (milliseconds / (1000 * 60 * 60)).toInt()
+    val minutes = (milliseconds % (1000 * 60 * 60)).toInt() / (1000 * 60)
+    val seconds = (milliseconds % (1000 * 60 * 60) % (1000 * 60) / 1000).toInt()
 
-        // Add hours if there
-        if (hours > 0) {
-            finalTimerString = "$hours:"
-        }
+    // Add hours if there
+    if (hours > 0) {
+    finalTimerString = "$hours:"
+    }
 
-        // Prepending 0 to seconds if it is one digit
-        secondsString = if (seconds < 10) {
-            "0$seconds"
-        } else {
-            "" + seconds
-        }
-        finalTimerString = "$finalTimerString$minutes:$secondsString"
+    // Prepending 0 to seconds if it is one digit
+    secondsString = if (seconds < 10) {
+    "0$seconds"
+    } else {
+    "" + seconds
+    }
+    finalTimerString = "$finalTimerString$minutes:$secondsString"
 
-        //      return  String.format("%02d Min, %02d Sec",
-        //                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
-        //                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
-        //                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
+    //      return  String.format("%02d Min, %02d Sec",
+    //                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
+    //                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
+    //                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
 
-        // return timer string
-        return finalTimerString
+    // return timer string
+    return finalTimerString
     }*/
 
     private val openDocumentLauncher =
@@ -141,14 +138,10 @@ class SoundTableActivity : AppCompatActivity() {
             val input = contentResolver.openInputStream(uri)
             val file = DocumentFile.fromSingleUri(applicationContext, uri)
 
-
-            SoundTable[globalId] = MusicButton(uri, file?.name, file?.length())
-
-            val title = TextView::class.safeCast(checkTitles())
-            title?.text = file?.name
-
+            SoundTable[globalId] = MusicButton(uri, file?.name, file?.length(), true)
             //binding.duration.text = file?.length().toString()
         }
+
 
     private fun idToButton(id: Int): Button? {
         return when (id) {
@@ -172,43 +165,69 @@ class SoundTableActivity : AppCompatActivity() {
         }
     }
 
-    private fun setButtonFunctionality(id: Int): View.OnClickListener {
-        return View.OnClickListener {
-            globalId = id
-
-            //Coger el boton que el usuario a elegido
-            val button : Button? = idToButton(id)
-
-            //Cambiar el titulo y la duracion del audio que se muestra
-            //binding.titlesound.text = SoundTable[id].title
-            //binding.duration.text = SoundTable[id].dur.toString()
-
-            val title = TextView::class.safeCast(checkTitles())
-            title?.text = SoundTable[id].title
-        }
-    }
-
     private fun setLongClickButtonFunctionality(id: Int): View.OnLongClickListener {
         return View.OnLongClickListener {
             if (SoundTable[id].ref == Uri.EMPTY) {
                 globalId = id
+
                 openDocumentLauncher.launch(arrayOf("audio/*"))
 
-                val button : Button? = idToButton(id)
+//                val title = TextView::class.safeCast(checkTitles())
+//                title?.text = SoundTable[id].title
+
+                val button: Button? = idToButton(id)
+                button?.setBackgroundColor(Color.WHITE)
+            } else {
+                globalId = id
+                SoundTable[id] = MusicButton()
+
+                val button: Button? = idToButton(id)
                 button?.setBackgroundColor(Color.WHITE)
             }
             return@OnLongClickListener true
         }
     }
 
+    private fun setButtonFunctionality(id: Int): View.OnClickListener {
+        return View.OnClickListener {
+            globalId = id
+            val button: Button? = idToButton(id)
 
-    private fun checkTitles() :TextView {
-        if(binding.titlesound.text == "title.empty" || binding.titlesound.text == "title"){
-            return binding.titlesound
+            //Cambiar el titulo y la duracion del audio que se muestra
+            //binding.duration.text = SoundTable[id].dur.toString()
+
+
+            binding.titlesound.setTextColor(getColor(R.color.black))
+            binding.titlesound2.setTextColor(getColor(R.color.black))
+
+            val title = TextView::class.safeCast(checkTitles(SoundTable[id]))
+            title?.text = SoundTable[id].title
+            title?.setTextColor(getColor(R.color.purple_200))
         }
-        else if(binding.titlesound2.text == "title.empty"|| binding.titlesound2.text == "title"){
-            return binding.titlesound2
-        }
-        return binding.titlesound
     }
+
+    private fun checkTitles(musicButton: MusicButton): TextView {
+        return if (SoundTable.setPlayer(musicButton))
+            binding.titlesound
+        else binding.titlesound2
+
+    }
+
+
+//    private fun checkTitles(id: Int) :TextView {
+//        if(binding.titlesound.text == SoundTable[id].title){
+//            return binding.titlesound
+//        }
+//        else if(binding.titlesound2.text == SoundTable[id].title){
+//            return binding.titlesound2
+//        }
+//        else if(binding.titlesound2.text != SoundTable[id].title && binding.titlesound.text == "title"){
+//            return binding.titlesound
+//        }
+//        else if(binding.titlesound.text != SoundTable[id].title && binding.titlesound2.text == "title"){
+//            return binding.titlesound2
+//        }
+//
+//        return binding.titlesound
+//    }
 }

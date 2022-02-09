@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.View
+import android.widget.ImageView
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivityDragNdropBinding
-import com.example.musicapp.databinding.ActivityMainBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlin.reflect.safeCast
@@ -31,7 +31,7 @@ class DragNDrop : AppCompatActivity() {
             val chip = Chip(this)
             chip.text = it
 
-            chip.setOnLongClickListener {
+            chip.setOnTouchListener { view, motionEvent ->
                 val shadow = View.DragShadowBuilder(chip)
                 chip.startDragAndDrop(null, shadow, chip, 0)
 
@@ -39,11 +39,14 @@ class DragNDrop : AppCompatActivity() {
             binding.chipGroupTop.addView(chip)
         }
 
-        binding.chipGroupDown.setOnDragListener(dragListener)
-        binding.chipGroupTop.setOnDragListener(dragListener)
+        binding.chipGroupDown.setOnDragListener(moveDragListener)
+        binding.chipGroupTop.setOnDragListener(moveDragListener)
+
+        binding.chipTrash.alpha = 0f
+        binding.chipTrash.setOnDragListener(removeDragListener)
     }
 
-    private val dragListener = View.OnDragListener { view, dragEvent ->
+    private val moveDragListener = View.OnDragListener { view, dragEvent ->
 
         val chip = Chip::class.safeCast(dragEvent.localState) ?: return@OnDragListener false
 
@@ -67,6 +70,38 @@ class DragNDrop : AppCompatActivity() {
             }
         }
 
+        true
+    }
+
+    private val removeDragListener = View.OnDragListener { view, dragEvent ->
+
+        val chip = Chip::class.safeCast(dragEvent.localState) ?: return@OnDragListener false
+
+        when(dragEvent.action){
+            DragEvent.ACTION_DRAG_STARTED -> {
+                binding.chipTrash.animate().alpha(1f)
+            }
+
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                binding.chipTrash.animate().scaleX(1.6f).scaleY(1.6f)
+            }
+
+            DragEvent.ACTION_DRAG_EXITED -> {
+                binding.chipTrash.animate().scaleX(1f).scaleY(1f)
+            }
+
+            DragEvent.ACTION_DROP -> {
+                ChipGroup::class.safeCast(chip.parent)?.removeView(chip)
+            }
+
+            DragEvent.ACTION_DRAG_ENDED -> {
+                binding.chipTrash.animate().scaleX(0f).scaleY(0f).withEndAction{
+                    binding.chipTrash.scaleX = 1f
+                    binding.chipTrash.scaleY = 1f
+                    binding.chipTrash.alpha = 0f
+                }
+            }
+        }
         true
     }
 
