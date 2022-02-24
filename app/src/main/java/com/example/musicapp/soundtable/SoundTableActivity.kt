@@ -2,6 +2,7 @@ package com.example.musicapp.soundtable
 
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -20,9 +21,10 @@ class SoundTableActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySoundTableBinding
 
-    private lateinit var mediaPlayer: MediaPlayer
+    private var mediaPlayer: MediaPlayer? = null
 
     private var globalId: Int = 0;
+    private var globalTitle: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,10 @@ class SoundTableActivity : AppCompatActivity() {
 
         SoundTable.initSoundTableArray()
 
+        initButtonsFunctionality()
+    }
+
+    private fun initButtonsFunctionality() {
         binding.stButton1.setOnClickListener(setButtonFunctionality(1))
         binding.stButton2.setOnClickListener(setButtonFunctionality(2))
         binding.stButton3.setOnClickListener(setButtonFunctionality(3))
@@ -77,9 +83,29 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton16.setOnLongClickListener(setLongClickButtonFunctionality(16))
 
         binding.stButtonPlay.setOnClickListener {
-            if (mediaPlayer.isPlaying) mediaPlayer.stop()
-            mediaPlayer = MediaPlayer.create(this, SoundTable[globalId].ref)
-            mediaPlayer.start()
+            if (mediaPlayer?.isPlaying == true) mediaPlayer?.stop()
+            mediaPlayer = MediaPlayer.create(this, SoundTable.playOnFocus(globalTitle))
+            mediaPlayer?.start()
+        }
+
+        binding.stButtonPause.setOnClickListener {
+            if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
+        }
+
+        binding.stButtonStop.setOnClickListener {
+            if (mediaPlayer?.isPlaying == true) mediaPlayer?.stop()
+        }
+
+        binding.titlesound.setOnClickListener {
+            binding.titlesound.setTextColor(getColor(R.color.purple_200))
+            binding.titlesound2.setTextColor(getColor(R.color.black))
+            globalTitle = true
+        }
+
+        binding.titlesound2.setOnClickListener {
+            binding.titlesound2.setTextColor(getColor(R.color.purple_200))
+            binding.titlesound.setTextColor(getColor(R.color.black))
+            globalTitle = false
         }
     }
 
@@ -142,7 +168,6 @@ class SoundTableActivity : AppCompatActivity() {
             //binding.duration.text = file?.length().toString()
         }
 
-
     private fun idToButton(id: Int): Button? {
         return when (id) {
             1 -> binding.stButton1
@@ -172,9 +197,6 @@ class SoundTableActivity : AppCompatActivity() {
 
                 openDocumentLauncher.launch(arrayOf("audio/*"))
 
-//                val title = TextView::class.safeCast(checkTitles())
-//                title?.text = SoundTable[id].title
-
                 val button: Button? = idToButton(id)
                 button?.setBackgroundColor(Color.WHITE)
             } else {
@@ -182,7 +204,7 @@ class SoundTableActivity : AppCompatActivity() {
                 SoundTable[id] = MusicButton()
 
                 val button: Button? = idToButton(id)
-                button?.setBackgroundColor(Color.WHITE)
+                button?.setBackgroundColor(Color.BLACK)
             }
             return@OnLongClickListener true
         }
@@ -193,41 +215,17 @@ class SoundTableActivity : AppCompatActivity() {
             globalId = id
             val button: Button? = idToButton(id)
 
-            //Cambiar el titulo y la duracion del audio que se muestra
-            //binding.duration.text = SoundTable[id].dur.toString()
-
-
-            binding.titlesound.setTextColor(getColor(R.color.black))
-            binding.titlesound2.setTextColor(getColor(R.color.black))
-
-            val title = TextView::class.safeCast(checkTitles(SoundTable[id]))
+            val title = TextView::class.safeCast(checkTitles())
             title?.text = SoundTable[id].title
-            title?.setTextColor(getColor(R.color.purple_200))
+
+            SoundTable.updateMusicButton(globalTitle, globalId)
         }
     }
 
-    private fun checkTitles(musicButton: MusicButton): TextView {
-        return if (SoundTable.setPlayer(musicButton))
+    private fun checkTitles(): TextView {
+        return if (globalTitle)
             binding.titlesound
         else binding.titlesound2
 
     }
-
-
-//    private fun checkTitles(id: Int) :TextView {
-//        if(binding.titlesound.text == SoundTable[id].title){
-//            return binding.titlesound
-//        }
-//        else if(binding.titlesound2.text == SoundTable[id].title){
-//            return binding.titlesound2
-//        }
-//        else if(binding.titlesound2.text != SoundTable[id].title && binding.titlesound.text == "title"){
-//            return binding.titlesound
-//        }
-//        else if(binding.titlesound.text != SoundTable[id].title && binding.titlesound2.text == "title"){
-//            return binding.titlesound2
-//        }
-//
-//        return binding.titlesound
-//    }
 }

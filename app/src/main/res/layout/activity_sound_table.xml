@@ -125,7 +125,7 @@
                 app:iconTint="@color/white" />
 
             <Button
-                android:id="@+id/stButtonRec"
+                android:id="@+id/stButtonStop"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleX="0.8"

@@ -59,5 +59,4 @@ class MainMenuFragment(private val menu_title: String,
         binding.menuImage.setImageResource(menu_image)
         binding.menuDescriptionText.text = menu_description
     }
-
 }
