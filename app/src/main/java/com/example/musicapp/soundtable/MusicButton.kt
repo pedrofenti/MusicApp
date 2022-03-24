@@ -7,10 +7,9 @@ import androidx.annotation.RequiresApi
 import java.time.Duration
 
 class MusicButton(
-    val ref: Uri = Uri.EMPTY,
+    val reference: Uri = Uri.EMPTY,
     val title: String? = "title",
-    val dur: Long? = 0L,
-    val player: Boolean = false)
+    val duration: Long? = 0L)
 {
 
 }

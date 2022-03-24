@@ -16,13 +16,12 @@ import com.example.musicapp.databinding.FragmentMainMenuBinding
  * Use the [MainMenuFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainMenuFragment(private val menu_title: String,
-                       @DrawableRes private val menu_image: Int
-                       , private val menu_description: String
+class MainMenuFragment(private val menuTitle: String,
+                       @DrawableRes private val menuImage: Int
+                       , private val menuDescription: String
                        , private val position: Int
                        ) : Fragment() {
 
-    // TODO delete in future
     constructor(): this("",0,"",0)
 
     private lateinit var binding: FragmentMainMenuBinding
@@ -47,7 +46,6 @@ class MainMenuFragment(private val menu_title: String,
         view.setOnClickListener {
             binding.mainMenuProgress.visibility = View.VISIBLE
 
-            //Entrar en la actividad dependiendo de la posicion del fragment
             when(position) {
                 0 -> startActivity(Intent(context, SoundTableActivity::class.java))
                 1 -> startActivity(Intent(context, SoundTableActivity::class.java))
@@ -55,8 +53,8 @@ class MainMenuFragment(private val menu_title: String,
             }
         }
 
-        binding.menuTitleText.text = menu_title
-        binding.menuImage.setImageResource(menu_image)
-        binding.menuDescriptionText.text = menu_description
+        binding.menuTitleText.text = menuTitle
+        binding.menuImage.setImageResource(menuImage)
+        binding.menuDescriptionText.text = menuDescription
     }
 }

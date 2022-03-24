@@ -2,7 +2,6 @@ package com.example.musicapp.soundtable
 
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -16,13 +15,10 @@ import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivitySoundTableBinding
 import kotlin.reflect.safeCast
 
-
 class SoundTableActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySoundTableBinding
-
     private var mediaPlayer: MediaPlayer? = null
-
     private var globalId: Int = 0;
     private var globalTitle: Boolean = true
 
@@ -36,9 +32,12 @@ class SoundTableActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        SoundTable.initSoundTableArray()
-
         initButtonsFunctionality()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
     }
 
     private fun initButtonsFunctionality() {
@@ -159,12 +158,11 @@ class SoundTableActivity : AppCompatActivity() {
 
     private val openDocumentLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            //TODO esto falla no se porqe
             if (uri == null) return@registerForActivityResult
-            val input = contentResolver.openInputStream(uri)
+            //val input = contentResolver.openInputStream(uri)
             val file = DocumentFile.fromSingleUri(applicationContext, uri)
 
-            SoundTable[globalId] = MusicButton(uri, file?.name, file?.length(), true)
+            SoundTable[globalId] = MusicButton(uri, file?.name, file?.length())
             //binding.duration.text = file?.length().toString()
         }
 
@@ -192,7 +190,7 @@ class SoundTableActivity : AppCompatActivity() {
 
     private fun setLongClickButtonFunctionality(id: Int): View.OnLongClickListener {
         return View.OnLongClickListener {
-            if (SoundTable[id].ref == Uri.EMPTY) {
+            if (SoundTable[id].reference == Uri.EMPTY) {
                 globalId = id
 
                 openDocumentLauncher.launch(arrayOf("audio/*"))
@@ -226,6 +224,5 @@ class SoundTableActivity : AppCompatActivity() {
         return if (globalTitle)
             binding.titlesound
         else binding.titlesound2
-
     }
 }
