@@ -130,11 +130,25 @@
                 android:layout_height="50dp"
                 android:scaleX="0.8"
                 app:backgroundTint="#0022AC"
-                app:icon="@drawable/ic_baseline_fiber_manual_record_24"
+                app:icon="@drawable/ic_baseline_stop_24"
+                app:iconPadding="0dp"
                 app:iconTint="@color/white" />
         </TableRow>
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/stButtonRecord"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#AC0000"
+        android:scaleX="0.8"
+        app:icon="@drawable/ic_baseline_fiber_manual_record_24"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/actionsLayout"
+        app:layout_constraintEnd_toEndOf="@+id/actionsLayout"
+        app:layout_constraintStart_toStartOf="@+id/actionsLayout" />
 
     <TableLayout
         android:id="@+id/buttonsLayout"

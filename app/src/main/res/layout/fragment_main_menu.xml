@@ -29,7 +29,6 @@
         android:layout_height="0dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
-        android:contentDescription="@+id/UWU"
         app:layout_constraintBottom_toTopOf="@+id/menu_description_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

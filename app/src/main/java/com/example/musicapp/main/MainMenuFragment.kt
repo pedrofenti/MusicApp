@@ -6,16 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import com.example.musicapp.soundtable.SoundTableActivity
 import com.example.musicapp.databinding.FragmentMainMenuBinding
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MainMenuFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MainMenuFragment(private val menuTitle: String,
                        @DrawableRes private val menuImage: Int
                        , private val menuDescription: String
@@ -37,19 +32,19 @@ class MainMenuFragment(private val menuTitle: String,
 
     override fun onResume() {
         super.onResume()
-        binding.mainMenuProgress.visibility = View.INVISIBLE
+        //binding.mainMenuProgress.visibility = View.INVISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         view.setOnClickListener {
-            binding.mainMenuProgress.visibility = View.VISIBLE
+            //binding.mainMenuProgress.visibility = View.VISIBLE
 
             when(position) {
-                0 -> startActivity(Intent(context, SoundTableActivity::class.java))
+                0 -> Toast.makeText(view.context, "This feature is coming soon!", Toast.LENGTH_SHORT).show()
                 1 -> startActivity(Intent(context, SoundTableActivity::class.java))
-                2 -> startActivity(Intent(context, SoundTableActivity::class.java))
+                2 -> Toast.makeText(view.context, "This feature is coming soon!", Toast.LENGTH_SHORT).show()
             }
         }
 

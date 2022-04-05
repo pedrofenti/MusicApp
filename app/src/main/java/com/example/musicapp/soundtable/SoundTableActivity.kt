@@ -1,5 +1,7 @@
 package com.example.musicapp.soundtable
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -11,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
+import com.example.musicapp.MediaPlayer.SoundPlayerManager
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivitySoundTableBinding
 import kotlin.reflect.safeCast
@@ -18,9 +21,9 @@ import kotlin.reflect.safeCast
 class SoundTableActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySoundTableBinding
-    private var mediaPlayer: MediaPlayer? = null
-    private var globalId: Int = 0;
-    private var globalTitle: Boolean = true
+
+    private var globalId: Int = 0; //Actual button
+    private var globalTitle: Boolean = true //Right title is true, Left title is false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,7 @@ class SoundTableActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer?.release()
+        SoundPlayerManager.destroyMediaPlayers()
     }
 
     private fun initButtonsFunctionality() {
@@ -81,18 +84,20 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton15.setOnLongClickListener(setLongClickButtonFunctionality(15))
         binding.stButton16.setOnLongClickListener(setLongClickButtonFunctionality(16))
 
+        binding.stButtonRecord.setOnClickListener {
+         SoundPlayerManager.recordMediaPlayer()
+        }
+
         binding.stButtonPlay.setOnClickListener {
-            if (mediaPlayer?.isPlaying == true) mediaPlayer?.stop()
-            mediaPlayer = MediaPlayer.create(this, SoundTable.playOnFocus(globalTitle))
-            mediaPlayer?.start()
+            SoundPlayerManager.playMediaPlayer(this, globalTitle)
         }
 
         binding.stButtonPause.setOnClickListener {
-            if (mediaPlayer?.isPlaying == true) mediaPlayer?.pause()
+            SoundPlayerManager.pauseMediaPlayer(globalTitle)
         }
 
         binding.stButtonStop.setOnClickListener {
-            if (mediaPlayer?.isPlaying == true) mediaPlayer?.stop()
+            SoundPlayerManager.stopMediaPlayer(globalTitle)
         }
 
         binding.titlesound.setOnClickListener {
@@ -105,6 +110,23 @@ class SoundTableActivity : AppCompatActivity() {
             binding.titlesound2.setTextColor(getColor(R.color.purple_200))
             binding.titlesound.setTextColor(getColor(R.color.black))
             globalTitle = false
+        }
+
+        binding.titlesound.setOnLongClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Rename audio name")
+                .setView(R.layout.activity_sound_table_input)
+                .setPositiveButton("Ok",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // START THE GAME!
+                    })
+                .setNegativeButton("Cancel",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
+                    })
+            // Create the AlertDialog object and return it
+            builder.create().show()
+            return@setOnLongClickListener true
         }
     }
 
