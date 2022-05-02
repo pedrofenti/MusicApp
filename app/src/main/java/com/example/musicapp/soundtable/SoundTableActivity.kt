@@ -16,6 +16,7 @@ import androidx.documentfile.provider.DocumentFile
 import com.example.musicapp.MediaPlayer.SoundPlayerManager
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivitySoundTableBinding
+import java.util.*
 import kotlin.reflect.safeCast
 
 class SoundTableActivity : AppCompatActivity() {
@@ -85,7 +86,7 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton16.setOnLongClickListener(setLongClickButtonFunctionality(16))
 
         binding.stButtonRecord.setOnClickListener {
-         SoundPlayerManager.recordMediaPlayer()
+            SoundPlayerManager.recordMediaPlayer()
         }
 
         binding.stButtonPlay.setOnClickListener {
@@ -233,12 +234,20 @@ class SoundTableActivity : AppCompatActivity() {
     private fun setButtonFunctionality(id: Int): View.OnClickListener {
         return View.OnClickListener {
             globalId = id
-            val button: Button? = idToButton(id)
+
+            SoundTable.updateMusicButton(globalTitle, globalId)
+            val media = SoundPlayerManager.loadMediaPlayer(this, globalTitle)
+            val time = Calendar.getInstance()
+            time.clear()
+            time.set(Calendar.MILLISECOND, media?.duration ?: 0)
+            val s = time.get(Calendar.SECOND)
+            val m = time.get(Calendar.MINUTE)
+
+            if(globalTitle) binding.duration.text = "$m:$s"
+            else binding.duration2.text = "$m:$s"
 
             val title = TextView::class.safeCast(checkTitles())
             title?.text = SoundTable[id].title
-
-            SoundTable.updateMusicButton(globalTitle, globalId)
         }
     }
 
