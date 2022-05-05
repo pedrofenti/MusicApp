@@ -4,9 +4,10 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -26,6 +27,45 @@ class SoundTableActivity : AppCompatActivity() {
     private var globalId: Int = 0; //Actual button
     private var globalTitle: Boolean = true //Right title is true, Left title is false
 
+    private lateinit var handler1: Handler
+    private lateinit var handler2: Handler
+
+    var statusChecker1: Runnable = object : Runnable {
+        override fun run() {
+            try {
+               //this function can change value of mInterval.
+                if (SoundPlayerManager.mediaPlayer1 == null) stopRepeatingTask1()
+                val progress: Int = SoundPlayerManager.mediaPlayer1?.currentPosition ?: 0
+                binding.durationBar.max = SoundPlayerManager.mediaPlayer1?.duration ?: 0
+                binding.durationBar.progress = progress
+                binding.actualDuration.text = DateUtils.formatElapsedTime(progress.toLong() / 1000)
+
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                handler1.postDelayed(this, 1000)
+            }
+        }
+    }
+
+    var statusChecker2: Runnable = object : Runnable {
+        override fun run() {
+            try {
+                //this function can change value of mInterval.
+                if (SoundPlayerManager.mediaPlayer2 == null) stopRepeatingTask1()
+                val progress: Int = SoundPlayerManager.mediaPlayer2?.currentPosition ?: 0
+                binding.durationBar2.max = SoundPlayerManager.mediaPlayer2?.duration ?: 0
+                binding.durationBar2.progress = progress
+                binding.actualDuration2.text = DateUtils.formatElapsedTime(progress.toLong() / 1000)
+
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                handler2.postDelayed(this, 1000)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,11 +76,16 @@ class SoundTableActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        handler1 = Handler(mainLooper)
+        handler2 = Handler(mainLooper)
+
         initButtonsFunctionality()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        stopRepeatingTask1()
+        stopRepeatingTask2()
         SoundPlayerManager.destroyMediaPlayers()
     }
 
@@ -91,6 +136,8 @@ class SoundTableActivity : AppCompatActivity() {
 
         binding.stButtonPlay.setOnClickListener {
             SoundPlayerManager.playMediaPlayer(this, globalTitle)
+            if (globalTitle) startRepeatingTask1()
+            else startRepeatingTask2()
         }
 
         binding.stButtonPause.setOnClickListener {
@@ -99,6 +146,8 @@ class SoundTableActivity : AppCompatActivity() {
 
         binding.stButtonStop.setOnClickListener {
             SoundPlayerManager.stopMediaPlayer(globalTitle)
+            if (globalTitle) stopRepeatingTask1()
+            else stopRepeatingTask2()
         }
 
         binding.titlesound.setOnClickListener {
@@ -182,11 +231,9 @@ class SoundTableActivity : AppCompatActivity() {
     private val openDocumentLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
-            //val input = contentResolver.openInputStream(uri)
             val file = DocumentFile.fromSingleUri(applicationContext, uri)
 
             SoundTable[globalId] = MusicButton(uri, file?.name, file?.length())
-            //binding.duration.text = file?.length().toString()
         }
 
     private fun idToButton(id: Int): Button? {
@@ -237,14 +284,10 @@ class SoundTableActivity : AppCompatActivity() {
 
             SoundTable.updateMusicButton(globalTitle, globalId)
             val media = SoundPlayerManager.loadMediaPlayer(this, globalTitle)
-            val time = Calendar.getInstance()
-            time.clear()
-            time.set(Calendar.MILLISECOND, media?.duration ?: 0)
-            val s = time.get(Calendar.SECOND)
-            val m = time.get(Calendar.MINUTE)
+            val time = media?.duration ?: 0
 
-            if(globalTitle) binding.duration.text = "$m:$s"
-            else binding.duration2.text = "$m:$s"
+            if(globalTitle) binding.duration.text = DateUtils.formatElapsedTime(time.toLong() / 1000)
+            else binding.duration2.text = DateUtils.formatElapsedTime(time.toLong() / 1000)
 
             val title = TextView::class.safeCast(checkTitles())
             title?.text = SoundTable[id].title
@@ -255,5 +298,21 @@ class SoundTableActivity : AppCompatActivity() {
         return if (globalTitle)
             binding.titlesound
         else binding.titlesound2
+    }
+
+    private fun startRepeatingTask1(){
+        statusChecker1.run()
+    }
+
+    private fun startRepeatingTask2(){
+        statusChecker2.run()
+    }
+
+    private fun stopRepeatingTask1(){
+        handler1.removeCallbacks(statusChecker1)
+    }
+
+    private fun stopRepeatingTask2(){
+        handler2.removeCallbacks(statusChecker2)
     }
 }

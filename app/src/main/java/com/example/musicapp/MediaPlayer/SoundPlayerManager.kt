@@ -7,11 +7,13 @@ import com.example.musicapp.soundtable.SoundTable
 
 object SoundPlayerManager {
 
-    private var mediaPlayer1: MediaPlayer? = null
-    private var mediaPlayer2: MediaPlayer? = null
+    var mediaPlayer1: MediaPlayer? = null
+    var mediaPlayer2: MediaPlayer? = null
 
     private var isMediaPlayer1Paused: Boolean = false
     private var isMediaPlayer2Paused: Boolean = false
+
+
 
     fun recordMediaPlayer() {
 
@@ -33,9 +35,7 @@ object SoundPlayerManager {
 
     fun playMediaPlayer(activity: Activity, globalTitle: Boolean) {
         if (globalTitle) {
-            if (mediaPlayer1?.isPlaying == true) {
-                pauseMediaPlayer(globalTitle)
-            } else if (mediaPlayer1 != null && isMediaPlayer1Paused) {
+            if (mediaPlayer1 != null && isMediaPlayer1Paused) {
                 mediaPlayer1?.start()
             } else {
 //                mediaPlayer1 = MediaPlayer.create(activity, SoundTable.playOnFocus(globalTitle))
@@ -43,12 +43,8 @@ object SoundPlayerManager {
             }
             isMediaPlayer1Paused = false
 
-            println(mediaPlayer1?.duration)
-
         } else {
-            if (mediaPlayer2?.isPlaying == true) {
-                pauseMediaPlayer(globalTitle)
-            } else if (mediaPlayer2 != null && isMediaPlayer2Paused) {
+            if (mediaPlayer2 != null && isMediaPlayer2Paused) {
                 mediaPlayer2?.start()
             } else {
 //                mediaPlayer2 = MediaPlayer.create(activity, SoundTable.playOnFocus(globalTitle))
@@ -87,9 +83,5 @@ object SoundPlayerManager {
         mediaPlayer2?.release()
         isMediaPlayer1Paused = false
         isMediaPlayer2Paused = false
-    }
-
-    fun checkToUpdateMediaPlayer1() {
-
     }
 }
