@@ -1,8 +1,10 @@
 package com.example.musicapp.soundtable
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -13,11 +15,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import com.example.musicapp.MediaPlayer.SoundPlayerManager
 import com.example.musicapp.R
 import com.example.musicapp.databinding.ActivitySoundTableBinding
 import java.util.*
+import java.util.jar.Manifest
 import kotlin.reflect.safeCast
 
 class SoundTableActivity : AppCompatActivity() {
@@ -33,7 +37,7 @@ class SoundTableActivity : AppCompatActivity() {
     var statusChecker1: Runnable = object : Runnable {
         override fun run() {
             try {
-               //this function can change value of mInterval.
+                //this function can change value of mInterval.
                 if (SoundPlayerManager.mediaPlayer1 == null) stopRepeatingTask1()
                 val progress: Int = SoundPlayerManager.mediaPlayer1?.currentPosition ?: 0
                 binding.durationBar.max = SoundPlayerManager.mediaPlayer1?.duration ?: 0
@@ -131,7 +135,33 @@ class SoundTableActivity : AppCompatActivity() {
         binding.stButton16.setOnLongClickListener(setLongClickButtonFunctionality(16))
 
         binding.stButtonRecord.setOnClickListener {
-            SoundPlayerManager.recordMediaPlayer()
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.RECORD_AUDIO,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    111
+                )
+
+            } else {
+                if (SoundPlayerManager.isRecording == false) {
+                    SoundPlayerManager.loadMediaRecorder()
+                    SoundPlayerManager.recordMediaRecorder(this)
+                } else {
+                    SoundPlayerManager.stopMediaRecorder(this)
+                }
+            }
         }
 
         binding.stButtonPlay.setOnClickListener {
@@ -193,41 +223,6 @@ class SoundTableActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Function to convert milliseconds time to
-     * Timer Format
-     * Hours:Minutes:Seconds
-    fun formateSeconds(milliseconds: Long): String? {
-    var finalTimerString = ""
-    var secondsString = ""
-
-    // Convert total duration into time
-    val hours = (milliseconds / (1000 * 60 * 60)).toInt()
-    val minutes = (milliseconds % (1000 * 60 * 60)).toInt() / (1000 * 60)
-    val seconds = (milliseconds % (1000 * 60 * 60) % (1000 * 60) / 1000).toInt()
-
-    // Add hours if there
-    if (hours > 0) {
-    finalTimerString = "$hours:"
-    }
-
-    // Prepending 0 to seconds if it is one digit
-    secondsString = if (seconds < 10) {
-    "0$seconds"
-    } else {
-    "" + seconds
-    }
-    finalTimerString = "$finalTimerString$minutes:$secondsString"
-
-    //      return  String.format("%02d Min, %02d Sec",
-    //                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
-    //                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
-    //                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
-
-    // return timer string
-    return finalTimerString
-    }*/
-
     private val openDocumentLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
@@ -286,7 +281,8 @@ class SoundTableActivity : AppCompatActivity() {
             val media = SoundPlayerManager.loadMediaPlayer(this, globalTitle)
             val time = media?.duration ?: 0
 
-            if(globalTitle) binding.duration.text = DateUtils.formatElapsedTime(time.toLong() / 1000)
+            if (globalTitle) binding.duration.text =
+                DateUtils.formatElapsedTime(time.toLong() / 1000)
             else binding.duration2.text = DateUtils.formatElapsedTime(time.toLong() / 1000)
 
             val title = TextView::class.safeCast(checkTitles())
@@ -300,19 +296,19 @@ class SoundTableActivity : AppCompatActivity() {
         else binding.titlesound2
     }
 
-    private fun startRepeatingTask1(){
+    private fun startRepeatingTask1() {
         statusChecker1.run()
     }
 
-    private fun startRepeatingTask2(){
+    private fun startRepeatingTask2() {
         statusChecker2.run()
     }
 
-    private fun stopRepeatingTask1(){
+    private fun stopRepeatingTask1() {
         handler1.removeCallbacks(statusChecker1)
     }
 
-    private fun stopRepeatingTask2(){
+    private fun stopRepeatingTask2() {
         handler2.removeCallbacks(statusChecker2)
     }
 }

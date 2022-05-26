@@ -3,20 +3,61 @@ package com.example.musicapp.MediaPlayer
 import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
+import android.media.MediaRecorder
+import android.os.Environment
+import android.widget.Toast
 import com.example.musicapp.soundtable.SoundTable
+import java.io.File
+import java.io.IOException
 
 object SoundPlayerManager {
 
     var mediaPlayer1: MediaPlayer? = null
     var mediaPlayer2: MediaPlayer? = null
 
+    var mediaRecorder: MediaRecorder? = null
+
+    private var output: File? = null
+
     private var isMediaPlayer1Paused: Boolean = false
     private var isMediaPlayer2Paused: Boolean = false
 
+    var isRecording: Boolean = false
+
+    fun loadMediaRecorder() {
+        mediaRecorder = MediaRecorder()
+        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mediaRecorder?.setOutputFile(output)
+    }
+
+    fun recordMediaRecorder(context: Context) {
+        isRecording = true;
+
+        var SDCardpath = Environment.getExternalStorageDirectory()
+        output = File(
+            SDCardpath.getAbsolutePath()
+                .toString() + "/.My Recordings"
+        )
 
 
-    fun recordMediaPlayer() {
+        try {
+            mediaRecorder?.prepare()
+            mediaRecorder?.start()
+            Toast.makeText(context, "Recording started!", Toast.LENGTH_SHORT).show()
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
 
+    fun stopMediaRecorder(context: Context) {
+        isRecording = false
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
+        Toast.makeText(context, "Recording ended!", Toast.LENGTH_SHORT).show()
     }
 
     fun loadMediaPlayer(context: Context, globalTitle: Boolean): MediaPlayer? {
@@ -81,7 +122,9 @@ object SoundPlayerManager {
     fun destroyMediaPlayers() {
         mediaPlayer1?.release()
         mediaPlayer2?.release()
+        mediaRecorder?.release()
         isMediaPlayer1Paused = false
         isMediaPlayer2Paused = false
+        isRecording = false
     }
 }

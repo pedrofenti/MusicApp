@@ -144,11 +144,13 @@
         android:layout_marginBottom="5dp"
         android:backgroundTint="#AC0000"
         android:scaleX="0.8"
+        android:visibility="gone"
         app:icon="@drawable/ic_baseline_fiber_manual_record_24"
         app:iconPadding="0dp"
         app:layout_constraintBottom_toTopOf="@+id/actionsLayout"
         app:layout_constraintEnd_toEndOf="@+id/actionsLayout"
-        app:layout_constraintStart_toStartOf="@+id/actionsLayout" />
+        app:layout_constraintStart_toStartOf="@+id/actionsLayout"
+        tools:visibility="gone" />
 
     <TableLayout
         android:id="@+id/buttonsLayout"

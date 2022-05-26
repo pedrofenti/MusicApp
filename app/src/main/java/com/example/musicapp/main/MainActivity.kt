@@ -1,18 +1,16 @@
 package com.example.musicapp.main
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import com.example.musicapp.ui.main.SectionsPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.example.musicapp.databinding.ActivityMainBinding
+import com.example.musicapp.ui.main.SectionsPagerAdapter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.material.tabs.TabLayout
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,5 +30,14 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
+
+        // init Ads
+        MobileAds.initialize(this )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 }
